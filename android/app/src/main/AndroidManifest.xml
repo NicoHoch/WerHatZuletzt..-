@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.wehazu.wer_hat_zuletzt">
    <application
-        android:label="wer_hat_zuletzt"
+        android:label="Wer hat zuletzt..?"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -1,92 +1,18 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-import 'dart:async';
-
+import 'package:wer_hat_zuletzt/sql_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 void main() async {
-  runApp(const MyApp());
-
   WidgetsFlutterBinding.ensureInitialized();
-  // Open the database and store the reference.
-  final database = openDatabase(
-    // Set the path to the database. Note: Using the `join` function from the
-    // `path` package is best practice to ensure the path is correctly
-    // constructed for each platform.
-    join(await getDatabasesPath(), 'questions_database.db'),
-    // When the database is first created, create a table to store dogs.
-    onCreate: (db, version) {
-      // Run the CREATE TABLE statement on the database.
-      return db.execute(
-        'CREATE TABLE questions(id INTEGER PRIMARY KEY, name TEXT, free BOOLEAN)',
-      );
-    },
-    // Set the version. This executes the onCreate function and provides a
-    // path to perform database upgrades and downgrades.
-    version: 1,
-  );
-
-
-  Future<void> insertQuestion(Question question) async {
-    // Get a reference to the database.
-    final db = await database;
-
-    // Insert the Dog into the correct table. You might also specify the
-    // `conflictAlgorithm` to use in case the same dog is inserted twice.
-    //
-    // In this case, replace any previous data.
-    await db.insert(
-      'questions',
-      question.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
-
-  var fido = const Question(
-    id: 0,
-    name: 'Fido',
-    free: false,
-  );
-
-  await insertQuestion(fido);
-
-
-
-}
-
-class Question {
-  final int id;
-  final String name;
-  final bool free;
-
-  const Question({
-    required this.id,
-    required this.name,
-    required this.free,
-  });
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'name': name,
-      'free': free,
-    };
-  }
-
-  // Implement toString to make it easier to see information about
-  // each dog when using the print statement.
-  @override
-  String toString() {
-    return 'Question{id: $id, name: $name, free: $free}';
-  }
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -199,6 +125,18 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePage extends State<GamePage> {
+  // SqliteService db = SqliteService();
+
+  // // All items
+  // List<String> _test = [];
+
+  // void _fillList() async {
+  //   var data = await db.getQuestions();
+  //   setState(() {
+  //     _test = data;
+  //   });
+  // }
+
   final Set<String> _questions = {
     "Wer hat sich zuletzt etwas gebrochen?",
     "Wer hat sich zuletzt etwas total unnötiges gekauft?",
@@ -279,6 +217,7 @@ class _GamePage extends State<GamePage> {
 
   @override
   Widget build(BuildContext context) {
+    // _fillList();
     _incrementCounter();
     return Scaffold(
       appBar: AppBar(
