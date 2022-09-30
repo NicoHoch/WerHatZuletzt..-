@@ -1,23 +1,40 @@
 import 'dart:io';
-import 'dart:typed_data';
+import 'dart:math';
 
 import 'package:flutter/services.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
 import 'models/question.dart';
 
 class SqliteService {
-  static const int _version = 1;
-  static const String _name = "questions_database.db";
+  SqliteService._privateConstructor();
+  static final SqliteService instance = SqliteService._privateConstructor();
 
-  static Future<Database> _getDB() async {
-    return openDatabase(
-      join(await getDatabasesPath(), _name),
-      onCreate: (db, version) async => await db.execute(
-          'CREATE TABLE questions(id INTEGER PRIMARY KEY, question TEXT, free BOOLEAN)'),
-      version: _version,
-    );
+  static Database? _database;
+  static List<Question> _quesionListTemp = [];
+  static bool _flag = false;
+  Future<Database> get database async => _database ??= await _initDatabase();
+
+  Future<Database> _initDatabase() async {
+    var databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, 'question_database.db');
+    if (FileSystemEntity.typeSync(path) == FileSystemEntityType.notFound) {
+      //Load db from assets folder
+      ByteData data =
+          await rootBundle.load(join('assets', 'questions_database.db'));
+      List<int> bytes =
+          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      await File(path).writeAsBytes(bytes);
+    } else {
+      deleteDatabase(path);
+      ByteData data =
+          await rootBundle.load(join('assets', 'questions_database.db'));
+      List<int> bytes =
+          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      await File(path).writeAsBytes(bytes);
+    }
+    return openDatabase(path);
   }
 
   //Delete Database
@@ -26,7 +43,7 @@ class SqliteService {
 
   //InsertQuestion
   static Future<void> insertQuestion(Question question) async {
-    final db = await _getDB();
+    final db = await instance._initDatabase();
 
     await db.insert(
       'questions',
@@ -36,23 +53,43 @@ class SqliteService {
   }
 
   //getQuestions
-  static Future<List<String>?> getQuestions() async {
-    final db = await _getDB();
+  Future<List<Question>> get getQuestions async {
+    final db = await instance.database;
 
-    final List<Map<String, dynamic>> maps = await db.query('questions');
-
-    if (maps.isEmpty) {
-      return null;
-    }
-    ;
+    final List<Map<String, dynamic>> questions = await db.query('Questions');
 
     // Convert the List<Map<String, dynamic> into a List<Question>.
-    return List.generate(maps.length, (i) {
+    return List.generate(questions.length, (i) {
       return Question(
-        id: maps[i]['id'],
-        question: maps[i]['question'],
-        free: maps[i]['free'] == 0 ? false : true,
-      ).question.toString();
+          id: questions[i]['Id'],
+          german: questions[i]['German'],
+          english: questions[i]['English'],
+          type: questions[i]['Type']);
     });
+  }
+
+  Future<void> setFlag() async {
+    _flag = false;
+    _quesionListTemp = [];
+  }
+
+  Future<Question> get randomQuesteion async {
+    if (_quesionListTemp.isEmpty && _flag == false) {
+      _quesionListTemp = await instance.getQuestions;
+    }
+    if (_quesionListTemp.isEmpty && _flag == true) {
+      return const Question(
+          german: "Das wars!", english: "Thats it!", type: "free");
+    }
+    _flag = true;
+
+    int randIndex = 0;
+    var rng = Random();
+    randIndex = rng.nextInt(_quesionListTemp.length);
+
+    Question randQuestion = _quesionListTemp[randIndex];
+    _quesionListTemp.removeAt(randIndex);
+
+    return randQuestion;
   }
 }
