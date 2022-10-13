@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
@@ -56,10 +57,10 @@ class SqliteService {
   }
 
   //getQuestions
-  Future<List<Question>> get getQuestions async {
+  Future<List<Question>> getQuestions(BuildContext context) async {
     final db = await instance.database;
-    Entitlement entitlement = Entitlement.class1;
-    // entitlement = Provider.of<RevenueCatProvider>(context).entitlement;
+    final entitlement =
+        Provider.of<RevenueCatProvider>(context, listen: false).entitlement;
     final List<Map<String, dynamic>> questions;
 
     if (entitlement == Entitlement.free) {
@@ -84,13 +85,13 @@ class SqliteService {
     _quesionListTemp = [];
   }
 
-  Future<Question> get randomQuesteion async {
+  Future<Question> randomQuesteion(BuildContext context) async {
     if (_quesionListTemp.isEmpty && _flag == false) {
-      _quesionListTemp = await instance.getQuestions;
+      _quesionListTemp = await instance.getQuestions(context);
     }
     if (_quesionListTemp.isEmpty && _flag == true) {
       return const Question(
-          german: "Das wars!", english: "Thats it!", type: "free");
+          german: "Das war\'s!", english: "Thats it!", type: "free");
     }
     _flag = true;
 
