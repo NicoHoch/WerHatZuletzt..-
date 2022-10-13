@@ -3,7 +3,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 
 import 'models/entitlement.dart';
 
-class RevenueCatProvider extends ChangeNotifier {
+class RevenueCatProvider with ChangeNotifier {
   RevenueCatProvider() {
     init();
   }

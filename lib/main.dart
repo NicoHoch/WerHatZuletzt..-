@@ -9,6 +9,8 @@ import 'package:wer_hat_zuletzt/revenuecat.dart';
 import 'package:wer_hat_zuletzt/sql_service.dart';
 import 'package:wer_hat_zuletzt/purchase_api.dart';
 
+import 'models/entitlement.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await PurchaseAPI.init();
@@ -74,6 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // final entitlement = Provider.of<RevenueCatProvider>(context).entitlement;
     return Scaffold(
         appBar: AppBar(
           title: const Text("Wer hat zuletzt?"),
@@ -115,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xff42104a)),
                   onPressed: () => _fetchOffers(),
-                  child: const Text('Mehr Fragen freischalten!'))
+                  child: const Text('Mehr Fragen freischalten!')),
               // entitlement == Entitlement.free
               //     ? ElevatedButton(
               //         style: ElevatedButton.styleFrom(

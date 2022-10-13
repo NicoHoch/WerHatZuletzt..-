@@ -3,8 +3,11 @@ import 'dart:math';
 
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
+import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:wer_hat_zuletzt/revenuecat.dart';
 
+import 'models/entitlement.dart';
 import 'models/question.dart';
 
 class SqliteService {
@@ -55,8 +58,16 @@ class SqliteService {
   //getQuestions
   Future<List<Question>> get getQuestions async {
     final db = await instance.database;
+    Entitlement entitlement = Entitlement.class1;
+    // entitlement = Provider.of<RevenueCatProvider>(context).entitlement;
+    final List<Map<String, dynamic>> questions;
 
-    final List<Map<String, dynamic>> questions = await db.query('Questions');
+    if (entitlement == Entitlement.free) {
+      questions =
+          await db.rawQuery('SELECT * FROM "Questions" WHERE "Type" == "free"');
+    } else {
+      questions = await db.rawQuery('SELECT * FROM "Questions"');
+    }
 
     // Convert the List<Map<String, dynamic> into a List<Question>.
     return List.generate(questions.length, (i) {

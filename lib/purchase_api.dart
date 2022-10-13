@@ -1,18 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
-
 class PurchaseAPI {
   static const _apiKey = 'goog_fBfLzWnzlCtViIVqERyxqAtoEoF';
-  
 
   static Future init() async {
     await Purchases.setDebugLogsEnabled(true);
 
     PurchasesConfiguration configuration = PurchasesConfiguration(_apiKey);
     await Purchases.configure(configuration);
-
-
   }
 
   static Future<List<Offering>> fetchOffers() async {
@@ -35,4 +32,5 @@ class PurchaseAPI {
       return false;
     }
   }
+
 }
