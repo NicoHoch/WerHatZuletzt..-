@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wer_hat_zuletzt/sql_service.dart';
 
+import 'package:wer_hat_zuletzt/globals.dart' as globals;
+
 class GamePage extends StatefulWidget {
   const GamePage({super.key});
 
@@ -66,17 +68,20 @@ class _GamePage extends State<GamePage> {
                 )
               : const Text("");
         }),
-        Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-          Text(
-            "$counter",
-            style: const TextStyle(
-              fontSize: 40,
-            ),
-            textAlign: TextAlign.center,
-          )
-        ]),
+        if (globals.toggleTimer == true)
+          Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "$counter",
+                  style: const TextStyle(
+                    fontSize: 40,
+                  ),
+                  textAlign: TextAlign.center,
+                )
+              ]),
       ])),
-      floatingActionButton: Container(
+      floatingActionButton: SizedBox(
           height: 90.0,
           width: 90.0,
           child: FittedBox(

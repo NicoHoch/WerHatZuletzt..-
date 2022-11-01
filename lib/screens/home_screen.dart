@@ -5,6 +5,9 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:wer_hat_zuletzt/models/entitlement.dart';
 import 'package:wer_hat_zuletzt/revenuecat.dart';
 import 'package:wer_hat_zuletzt/screens/rules_page.dart';
+import 'package:toggle_switch/toggle_switch.dart';
+
+import 'package:wer_hat_zuletzt/globals.dart' as globals;
 
 import 'package:wer_hat_zuletzt/sql_service.dart';
 import 'package:wer_hat_zuletzt/purchase_api.dart';
@@ -26,6 +29,31 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         appBar: AppBar(
           title: const Text("Wer hat zuletzt..?"),
+          actions: [
+            PopupMenuButton<int>(
+                icon: const Icon(Icons.settings),
+                color: Theme.of(context).scaffoldBackgroundColor,
+                onSelected: (item) => onMenuButtonSelected(context, item),
+                itemBuilder: (context) => [
+                      PopupMenuItem<int>(
+                          value: 0,
+                          child: globals.toggleTimer == false
+                              ? Row(
+                                  children: const [
+                                    Icon(Icons.timer_outlined),
+                                    SizedBox(width: 8),
+                                    Text("Timer einschalten"),
+                                  ],
+                                )
+                              : Row(
+                                  children: const [
+                                    Icon(Icons.timer_off_outlined),
+                                    SizedBox(width: 8),
+                                    Text("Timer ausschalten"),
+                                  ],
+                                ))
+                    ])
+          ],
         ),
         body: Center(
           child: Column(
@@ -81,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         )
                       : const Text(
-                          "⭐ Du nutzt die erweiterte Verison ⭐",
+                          "⭐ Du nutzt die erweiterte Version ⭐",
                         );
                 },
               ),
@@ -183,5 +211,12 @@ class _MyHomePageState extends State<MyHomePage> {
   buyPackage(Package package) async {
     Navigator.pop(context);
     await PurchaseAPI.purchasePackage(package);
+  }
+
+  onMenuButtonSelected(BuildContext context, int item) {
+    switch (item) {
+      case 0:
+        globals.toggleTimer = !globals.toggleTimer;
+    }
   }
 }

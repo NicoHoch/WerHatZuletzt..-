@@ -10,15 +10,15 @@ import 'package:wer_hat_zuletzt/sql_service.dart';
 import 'screens/home_screen.dart';
 
 void main() async {
-  Wakelock.enable();
+  
   WidgetsFlutterBinding.ensureInitialized();
+  Wakelock.enable();
   await PurchaseAPI.init();
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,
   ]);
-  // RevenueCatProvider;
   runApp(const MyApp());
 }
 

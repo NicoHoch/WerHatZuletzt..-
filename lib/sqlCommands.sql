@@ -12,6 +12,11 @@ UPDATE Questions
 SET Type = 'pay1'
 WHERE Id >= 6
 
+UPDATE Questions 
+SET German = 'Wer hat zuletzt einen Disneyfilm gesehen?'
+WHERE Id == 42
+
+
 -- Befüllen der Tabelle
 
 Insert INTO Questions ([German],[English],[Type]) SELECT '
@@ -64,7 +69,7 @@ Insert INTO Questions ([German],[English],[Type]) SELECT '
 -- UNION ALL SELECT 'Wer hat zuletzt Pizza gegessen?', 'English Version', 'class1'
 -- UNION ALL SELECT 'Wer hat zuletzt ein Kleidungsstück gekauft?', 'English Version', 'class1'
 -- UNION ALL SELECT 'Wer hat zuletzt ein Brettspiel gespielt?', 'English Version', 'class1'
--- UNION ALL SELECT 'Wer hat zuletzt ein Disneyfilm gesehen?', 'English Version', 'class1'
+-- UNION ALL SELECT 'Wer hat zuletzt einen Disneyfilm gesehen?', 'English Version', 'class1'
 -- UNION ALL SELECT 'Wer war zuletzt im Ausland?', 'English Version', 'class1'
 -- UNION ALL SELECT 'Wer war zuletzt auf einem Konzert?', 'English Version', 'class1'
 -- UNION ALL SELECT 'Wer war zuletzt in einem Fast-Food-Restaurant?', 'English Version', 'class1'

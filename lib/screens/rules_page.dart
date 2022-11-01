@@ -26,7 +26,7 @@ class RulesPage extends StatelessWidget {
                 Card(
                   child: ListTile(
                     title: Text(
-                        'Ziel des Spiels ist es, sich besser kennenzulernen und lustige Geschichten auszutauschen. Die Punktevergabe bleibt euch selbst überlassen. Unten findet ihr ein Vorschlag, wie ihr es mit Wasser(!) spielen könnt.'),
+                        'Ziel des Spiels ist es, sich besser kennenzulernen und lustige Geschichten auszutauschen. Die Punktevergabe bleibt euch selbst überlassen. Unten findet ihr einen Vorschlag, wie ihr es mit Wasser(!) spielen könnt.'),
                   ),
                 ),
                 Card(
@@ -40,7 +40,7 @@ class RulesPage extends StatelessWidget {
                   child: ListTile(
                     leading: Text('2.'),
                     title: Text(
-                        'Jede Person überlegt für sich, ob sie diejenige ist, auf die die Frage zutrifft. (Also im Vergleich zu den Mitspielenden.)'),
+                        'Jede Person überlegt für sich, ob sie diejenige ist, auf die die Frage zutrifft (Bezogen auf die Mitspielenden).'),
                   ),
                 ),
                 Card(
@@ -54,7 +54,7 @@ class RulesPage extends StatelessWidget {
                       leading: Text('4.'),
                       title: Text('Nun können folgende Szenarien auftreten:'),
                       subtitle: Text(
-                          'Eine Person berührt die Nase: Diese Person darf nun entscheiden, wer 2 Schlücke trinkt.\nMehrere Personen berühren die Nase: Nun müsst ihr herausfinden, wer recht hat. Nur die Verlierer trinken 3 Schlücke.\nNiemand berührt die Nase: Es hat sich niemand getraut? Alle trinken 2 Schlücke.')),
+                          'Eine Person berührt die Nase: Diese Person darf nun entscheiden, wer zwei Schlücke trinkt.\nMehrere Personen berühren die Nase: Nun müsst ihr herausfinden, wer recht hat. Nur die Verlierer trinken drei Schlücke.\nNiemand berührt die Nase: Es hat sich niemand getraut? Alle trinken zwei Schlücke.')),
                 ),
               ],
             )));
