@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:wer_hat_zuletzt/revenuecat.dart';
 
 import 'package:wer_hat_zuletzt/purchase_api.dart';
+import 'package:wer_hat_zuletzt/sql_service.dart';
 
 import 'screens/home_screen.dart';
 
@@ -28,6 +29,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<RevenueCatProvider>(
           create: (_) => RevenueCatProvider(),
+        ),
+        ChangeNotifierProvider<SqliteService>(
+          create: (_) => SqliteService(),
         ),
       ],
       child: MaterialApp(

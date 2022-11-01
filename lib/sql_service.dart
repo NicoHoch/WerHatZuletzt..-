@@ -11,13 +11,18 @@ import 'package:wer_hat_zuletzt/revenuecat.dart';
 import 'models/entitlement.dart';
 import 'models/question.dart';
 
-class SqliteService {
+class SqliteService with ChangeNotifier {
+  SqliteService() {
+    _initDatabase();
+  }
   SqliteService._privateConstructor();
   static final SqliteService instance = SqliteService._privateConstructor();
 
   static Database? _database;
   static List<Question> _quesionListTemp = [];
   static bool _flag = false;
+  Question randQuestion =
+      new Question(german: "Laden...", english: "Loasing", type: "free");
   Future<Database> get database async => _database ??= await _initDatabase();
 
   Future<Database> _initDatabase() async {
@@ -85,7 +90,7 @@ class SqliteService {
     _quesionListTemp = [];
   }
 
-  Future<Question> randomQuesteion(BuildContext context) async {
+  Future randomQuestion(BuildContext context) async {
     if (_quesionListTemp.isEmpty && _flag == false) {
       _quesionListTemp = await instance.getQuestions(context);
     }
@@ -99,9 +104,9 @@ class SqliteService {
     var rng = Random();
     randIndex = rng.nextInt(_quesionListTemp.length);
 
-    Question randQuestion = _quesionListTemp[randIndex];
+    randQuestion = _quesionListTemp[randIndex];
     _quesionListTemp.removeAt(randIndex);
 
-    return randQuestion;
+    notifyListeners();
   }
 }

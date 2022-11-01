@@ -9,7 +9,7 @@ import 'package:wer_hat_zuletzt/screens/rules_page.dart';
 import 'package:wer_hat_zuletzt/sql_service.dart';
 import 'package:wer_hat_zuletzt/purchase_api.dart';
 
-import 'game_page.dart';
+import 'game_page/game_page.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             backgroundColor: Colors.amber,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(color: Colors.amber),
+                              side: const BorderSide(color: Colors.amber),
                             ),
                           ),
                           onPressed: () => _fetchOffers(),
