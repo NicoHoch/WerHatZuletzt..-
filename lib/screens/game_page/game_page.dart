@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wer_hat_zuletzt/models/question.dart';
 import 'package:wer_hat_zuletzt/sql_service.dart';
 
 class GamePage extends StatefulWidget {
@@ -14,10 +13,17 @@ class GamePage extends StatefulWidget {
 
 // exactly one random quesionn
 class _GamePage extends State<GamePage> {
-  //just for updating the page
-
   int counter = 5;
   Timer? timer;
+
+  @override
+  void initState() {
+    super.initState();
+    nextQuestion();
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      decrementCounter();
+    });
+  }
 
   void decrementCounter() {
     setState(
@@ -29,22 +35,7 @@ class _GamePage extends State<GamePage> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    setCountdown();
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      decrementCounter();
-    });
-  }
-
-  void stopTimer() {}
-
-  void resetTimer() {
-    counter = 0;
-  }
-
-  void setCountdown() {
+  void nextQuestion() {
     counter = 5;
     Provider.of<SqliteService>(context, listen: false).randomQuestion(context);
   }
@@ -63,11 +54,17 @@ class _GamePage extends State<GamePage> {
       ),
       body: Center(
           child: Column(children: <Widget>[
-        const SizedBox(height: 20),
+        const SizedBox(height: 80),
         Consumer<SqliteService>(builder: (context, provider, child) {
           return provider.randQuestion.german != ""
-              ? Text(provider.randQuestion.german)
-              : const Text("Laden...");
+              ? Text(
+                  provider.randQuestion.german,
+                  style: const TextStyle(
+                    fontSize: 40,
+                  ),
+                  textAlign: TextAlign.center,
+                )
+              : const Text("");
         }),
         Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
           Text(
@@ -80,11 +77,11 @@ class _GamePage extends State<GamePage> {
         ]),
       ])),
       floatingActionButton: Container(
-          height: 80.0,
-          width: 80.0,
+          height: 90.0,
+          width: 90.0,
           child: FittedBox(
               child: FloatingActionButton(
-            onPressed: setCountdown,
+            onPressed: nextQuestion,
             tooltip: 'Increment',
             backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
             child: const Icon(Icons.arrow_forward),

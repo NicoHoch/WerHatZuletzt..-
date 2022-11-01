@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:wer_hat_zuletzt/revenuecat.dart';
+import 'package:wakelock/wakelock.dart';
 
 import 'package:wer_hat_zuletzt/purchase_api.dart';
 import 'package:wer_hat_zuletzt/sql_service.dart';
@@ -9,6 +10,7 @@ import 'package:wer_hat_zuletzt/sql_service.dart';
 import 'screens/home_screen.dart';
 
 void main() async {
+  Wakelock.enable();
   WidgetsFlutterBinding.ensureInitialized();
   await PurchaseAPI.init();
 
