@@ -15,7 +15,7 @@ class GamePage extends StatefulWidget {
 
 // exactly one random quesionn
 class _GamePage extends State<GamePage> {
-  int counter = 5;
+  int counter = globals.timerValue.round();
   Timer? timer;
 
   @override
@@ -38,7 +38,7 @@ class _GamePage extends State<GamePage> {
   }
 
   void nextQuestion() {
-    counter = 5;
+    counter = globals.timerValue.round();
     Provider.of<SqliteService>(context, listen: false).randomQuestion(context);
   }
 

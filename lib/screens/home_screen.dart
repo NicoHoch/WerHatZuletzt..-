@@ -5,9 +5,9 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:wer_hat_zuletzt/models/entitlement.dart';
 import 'package:wer_hat_zuletzt/revenuecat.dart';
 import 'package:wer_hat_zuletzt/screens/rules_page.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 
 import 'package:wer_hat_zuletzt/globals.dart' as globals;
+import 'package:wer_hat_zuletzt/screens/settings_page.dart';
 
 import 'package:wer_hat_zuletzt/sql_service.dart';
 import 'package:wer_hat_zuletzt/purchase_api.dart';
@@ -23,6 +23,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool isLoadeng = false;
+  double _timerValue = globals.timerValue;
 
   @override
   Widget build(BuildContext context) {
@@ -30,29 +31,13 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           title: const Text("Wer hat zuletzt..?"),
           actions: [
-            PopupMenuButton<int>(
-                icon: const Icon(Icons.settings),
-                color: Theme.of(context).scaffoldBackgroundColor,
-                onSelected: (item) => onMenuButtonSelected(context, item),
-                itemBuilder: (context) => [
-                      PopupMenuItem<int>(
-                          value: 0,
-                          child: globals.toggleTimer == false
-                              ? Row(
-                                  children: const [
-                                    Icon(Icons.timer_outlined),
-                                    SizedBox(width: 8),
-                                    Text("Timer einschalten"),
-                                  ],
-                                )
-                              : Row(
-                                  children: const [
-                                    Icon(Icons.timer_off_outlined),
-                                    SizedBox(width: 8),
-                                    Text("Timer ausschalten"),
-                                  ],
-                                ))
-                    ])
+            FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context).push(_createRoute());
+              },
+              backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+              child: const Icon(Icons.menu),
+            )
           ],
         ),
         body: Center(
@@ -212,11 +197,24 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.pop(context);
     await PurchaseAPI.purchasePackage(package);
   }
+}
 
-  onMenuButtonSelected(BuildContext context, int item) {
-    switch (item) {
-      case 0:
-        globals.toggleTimer = !globals.toggleTimer;
-    }
-  }
+// Animation for settings page
+Route _createRoute() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) =>
+        const SettingsPage(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(0.0, -1.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
 }
