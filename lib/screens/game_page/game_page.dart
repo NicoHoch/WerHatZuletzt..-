@@ -21,7 +21,7 @@ class _GamePage extends State<GamePage> {
   @override
   void initState() {
     super.initState();
-    nextQuestion();
+    nextQuestion;
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       decrementCounter();
     });
