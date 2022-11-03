@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-
+import 'settings_service.dart';
 import 'package:wer_hat_zuletzt/globals.dart' as globals;
 
 class SettingsPage extends StatefulWidget {
@@ -15,6 +15,12 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => {
+                  Navigator.of(context).pop(),
+                  SettingsService.setGlobalsPersistent()
+                }),
         title: const Text('Wer hat zuletzt..?'),
       ),
       body: Column(

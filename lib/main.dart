@@ -6,13 +6,13 @@ import 'package:wakelock/wakelock.dart';
 
 import 'package:wer_hat_zuletzt/purchase_api.dart';
 import 'package:wer_hat_zuletzt/sql_service.dart';
-
+import 'settings_service.dart';
 import 'screens/home_screen.dart';
 
 void main() async {
-  
   WidgetsFlutterBinding.ensureInitialized();
   Wakelock.enable();
+  SettingsService.getGlobalsPersistent();
   await PurchaseAPI.init();
 
   SystemChrome.setPreferredOrientations([

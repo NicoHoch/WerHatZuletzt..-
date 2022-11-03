@@ -7,7 +7,7 @@ import 'package:wer_hat_zuletzt/revenuecat.dart';
 import 'package:wer_hat_zuletzt/screens/rules_page.dart';
 
 import 'package:wer_hat_zuletzt/globals.dart' as globals;
-import 'package:wer_hat_zuletzt/screens/settings_page.dart';
+import 'package:wer_hat_zuletzt/settings_page.dart';
 
 import 'package:wer_hat_zuletzt/sql_service.dart';
 import 'package:wer_hat_zuletzt/purchase_api.dart';
@@ -31,11 +31,14 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           title: const Text("Wer hat zuletzt..?"),
           actions: [
-            FloatingActionButton(
+            TextButton(
               onPressed: () {
                 Navigator.of(context).push(_createRoute());
               },
-              backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+              // backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+              ),
               child: const Icon(Icons.menu),
             )
           ],
