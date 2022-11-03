@@ -12,7 +12,7 @@ import 'models/entitlement.dart';
 import 'models/question.dart';
 
 class SqliteService with ChangeNotifier {
-  static const newDbVersion = 2;
+  static const newDbVersion = 3;
   SqliteService() {
     _initDatabase();
   }
@@ -24,7 +24,12 @@ class SqliteService with ChangeNotifier {
   static bool _flag = false;
   Question randQuestion =
       new Question(german: "Viel Spaß!", english: "Loading", type: "free");
-  Future<Database> get database async => _database ??= await _initDatabase();
+
+  Future<Database> get database async {
+    if (_database != null) return _database!;
+    _database = await _initDatabase();
+    return _database!;
+  }
 
   Future<Database> _initDatabase() async {
     Database db;
@@ -47,6 +52,8 @@ class SqliteService with ChangeNotifier {
       // if database exists but version is to low
       if (await db.getVersion() < newDbVersion) {
         deleteDatabase(path);
+        databasesPath = await getDatabasesPath();
+        path = join(databasesPath, 'question_database.db');
         ByteData data =
             await rootBundle.load(join('assets', 'questions_database.db'));
         List<int> bytes =
@@ -92,7 +99,6 @@ class SqliteService with ChangeNotifier {
     } else {
       questions = await db.rawQuery('SELECT * FROM "Questions"');
     }
-    db.close();
 
     // Convert the List<Map<String, dynamic> into a List<Question>.
     return List.generate(questions.length, (i) {
@@ -114,18 +120,18 @@ class SqliteService with ChangeNotifier {
       _quesionListTemp = await instance.getQuestions(context);
     }
     if (_quesionListTemp.isEmpty && _flag == true) {
-      return const Question(
+      randQuestion = const Question(
           german: "Das war\'s!", english: "Thats it!", type: "free");
+    } else {
+      _flag = true;
+
+      int randIndex = 0;
+      var rng = Random();
+      randIndex = rng.nextInt(_quesionListTemp.length);
+
+      randQuestion = _quesionListTemp[randIndex];
+      _quesionListTemp.removeAt(randIndex);
     }
-    _flag = true;
-
-    int randIndex = 0;
-    var rng = Random();
-    randIndex = rng.nextInt(_quesionListTemp.length);
-
-    randQuestion = _quesionListTemp[randIndex];
-    _quesionListTemp.removeAt(randIndex);
-
     notifyListeners();
   }
 }
