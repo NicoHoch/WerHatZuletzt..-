@@ -21,7 +21,7 @@ class _GamePage extends State<GamePage> {
   @override
   void initState() {
     super.initState();
-    nextQuestion;
+    // nextQuestion();
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       decrementCounter();
     });
@@ -38,8 +38,8 @@ class _GamePage extends State<GamePage> {
   }
 
   void nextQuestion() {
-    counter = globals.timerValue.round();
     Provider.of<SqliteService>(context, listen: false).randomQuestion(context);
+    counter = globals.timerValue.round();
   }
 
   @override

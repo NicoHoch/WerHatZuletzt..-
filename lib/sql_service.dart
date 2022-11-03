@@ -12,7 +12,7 @@ import 'models/entitlement.dart';
 import 'models/question.dart';
 
 class SqliteService with ChangeNotifier {
-  static const NEW_DB_VERSION = 2;
+  static const newDbVersion = 2;
   SqliteService() {
     _initDatabase();
   }
@@ -23,7 +23,7 @@ class SqliteService with ChangeNotifier {
   static List<Question> _quesionListTemp = [];
   static bool _flag = false;
   Question randQuestion =
-      new Question(german: "Laden...", english: "Loading", type: "free");
+      new Question(german: "Viel Spaß!", english: "Loading", type: "free");
   Future<Database> get database async => _database ??= await _initDatabase();
 
   Future<Database> _initDatabase() async {
@@ -40,12 +40,12 @@ class SqliteService with ChangeNotifier {
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await File(path).writeAsBytes(bytes);
       db = await openDatabase(path);
-      db.setVersion(NEW_DB_VERSION);
+      db.setVersion(newDbVersion);
     } else {
       db = await openDatabase(path);
 
       // if database exists but version is to low
-      if (await db.getVersion() < NEW_DB_VERSION) {
+      if (await db.getVersion() < newDbVersion) {
         deleteDatabase(path);
         ByteData data =
             await rootBundle.load(join('assets', 'questions_database.db'));
@@ -53,12 +53,12 @@ class SqliteService with ChangeNotifier {
             data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
         await File(path).writeAsBytes(bytes);
         db = await openDatabase(path);
-        db.setVersion(NEW_DB_VERSION);
+        db.setVersion(newDbVersion);
       }
 
       // database exists and version is ok
       else {
-        db = await openDatabase(path);
+        return db;
       }
     }
     return db;
@@ -92,6 +92,7 @@ class SqliteService with ChangeNotifier {
     } else {
       questions = await db.rawQuery('SELECT * FROM "Questions"');
     }
+    db.close();
 
     // Convert the List<Map<String, dynamic> into a List<Question>.
     return List.generate(questions.length, (i) {
