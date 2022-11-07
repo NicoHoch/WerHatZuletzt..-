@@ -32,9 +32,9 @@ class SqliteService with ChangeNotifier {
   }
 
   Future<Database> _initDatabase() async {
-    Database db;
     var databasesPath = await getDatabasesPath();
     String path = join(databasesPath, 'question_database.db');
+    Database db;
 
     // if db doesn't exist at all
     if (FileSystemEntity.typeSync(path) == FileSystemEntityType.notFound) {
@@ -44,10 +44,25 @@ class SqliteService with ChangeNotifier {
       List<int> bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await File(path).writeAsBytes(bytes);
-      return await openDatabase(path);
+      db = await openDatabase(path);
+      db.setVersion(newDbVersion);
     } else {
-      return await openDatabase(path);
+      db = await openDatabase(path);
+      if (newDbVersion > await db.getVersion()) {
+        deleteDatabase(path);
+        var databasesPath = await getDatabasesPath();
+        String pathNew = join(databasesPath, 'question_database.db');
+
+        ByteData data =
+            await rootBundle.load(join('assets', 'questions_database.db'));
+        List<int> bytes =
+            data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+        await File(pathNew).writeAsBytes(bytes);
+        db = await openDatabase(path);
+        db.setVersion(newDbVersion);
+      }
     }
+    return db;
   }
 
   //Delete Database

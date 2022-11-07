@@ -95,3 +95,5 @@ Insert INTO Questions ([German],[English],[Type]) SELECT '
 
 -- Alle Tabelleneinträge ausgeben
 SELECT * from Questions;
+
+delete from Questions where Id >3;
