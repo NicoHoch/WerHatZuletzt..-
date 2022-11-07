@@ -44,31 +44,10 @@ class SqliteService with ChangeNotifier {
       List<int> bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await File(path).writeAsBytes(bytes);
-      db = await openDatabase(path);
-      db.setVersion(newDbVersion);
+      return await openDatabase(path);
     } else {
-      db = await openDatabase(path);
-
-      // if database exists but version is to low
-      if (await db.getVersion() < newDbVersion) {
-        deleteDatabase(path);
-        databasesPath = await getDatabasesPath();
-        path = join(databasesPath, 'question_database.db');
-        ByteData data =
-            await rootBundle.load(join('assets', 'questions_database.db'));
-        List<int> bytes =
-            data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-        await File(path).writeAsBytes(bytes);
-        db = await openDatabase(path);
-        db.setVersion(newDbVersion);
-      }
-
-      // database exists and version is ok
-      else {
-        return db;
-      }
+      return await openDatabase(path);
     }
-    return db;
   }
 
   //Delete Database

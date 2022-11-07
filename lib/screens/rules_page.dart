@@ -47,7 +47,7 @@ class RulesPage extends StatelessWidget {
                     child: ListTile(
                   leading: Text('3.'),
                   title: Text(
-                      'Es wird von drei rückwärts gezählt und alle Personen, die denken, sie sind diejenigen, auf die es zutrifft, berühren die (eigene) Nasenspitze.'),
+                      'Es wird von einer beliebigen Zahl rückwärts gezählt. Bei null berühren alle Personen, die denken, sie sind diejenigen, auf die es zutrifft, die (eigene) Nasenspitze.'),
                 )),
                 Card(
                   child: ListTile(

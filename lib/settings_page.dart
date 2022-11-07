@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:wer_hat_zuletzt/models/entitlement.dart';
+import 'package:wer_hat_zuletzt/revenuecat.dart';
 import 'settings_service.dart';
 import 'package:wer_hat_zuletzt/globals.dart' as globals;
 
@@ -16,7 +19,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.white),
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => {
                   Navigator.of(context).pop(),
                   SettingsService.setGlobalsPersistent()
@@ -36,14 +39,17 @@ class _SettingsPageState extends State<SettingsPage> {
                   width: MediaQuery.of(context).size.width * 0.8,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(113, 255, 255, 255),
+                    color: const Color.fromARGB(113, 255, 255, 255),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Timer: "),
+                        const Text(
+                          "Timer: ",
+                          style: TextStyle(color: Colors.white, fontSize: 25),
+                        ),
                         ToggleSwitch(
                           minWidth: 90.0,
                           initialLabelIndex:
@@ -75,19 +81,22 @@ class _SettingsPageState extends State<SettingsPage> {
                       ]))),
           if (globals.toggleTimer)
             Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
                 child: Container(
                     width: MediaQuery.of(context).size.width * 0.8,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(113, 255, 255, 255),
+                      color: const Color.fromARGB(113, 255, 255, 255),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Dauer des Timers in Sekunden: "),
+                          const Text(
+                            "Dauer des Timers in Sekunden: ",
+                            style: TextStyle(color: Colors.white, fontSize: 25),
+                          ),
                           Slider(
                               value: globals.timerValue,
                               min: 0,
@@ -99,9 +108,42 @@ class _SettingsPageState extends State<SettingsPage> {
                                   globals.timerValue = value;
                                 });
                               }),
-                        ])))
+                        ]))),
+          if (globals.restorePurchaseFlag == true)
+            Consumer<RevenueCatProvider>(
+              builder: (context, provider, child) {
+                return provider.entitlement == Entitlement.free
+                    ? Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            fixedSize: Size(
+                                MediaQuery.of(context).size.width * 0.8, 60),
+                            backgroundColor: const Color(0xFFAA86B0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                          onPressed: () => _restorePurchase(context),
+                          child: const Text(
+                            'Einkäufe wiederherstellen',
+                            style: TextStyle(color: Colors.white, fontSize: 25),
+                          ),
+                        ))
+                    : const Text(
+                        "⭐ Du nutzt die erweiterte Version ⭐",
+                      );
+              },
+            ),
         ],
       ),
     );
   }
+}
+
+void _restorePurchase(BuildContext context) async {
+  Provider.of<RevenueCatProvider>(context, listen: false)
+      .restorePurchaseStatus();
+  SettingsService.setGlobalsPersistent();
 }
