@@ -140,10 +140,12 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     );
   }
-}
 
-void _restorePurchase(BuildContext context) async {
-  Provider.of<RevenueCatProvider>(context, listen: false)
-      .restorePurchaseStatus();
-  SettingsService.setGlobalsPersistent();
+  void _restorePurchase(BuildContext context) async {
+    Provider.of<RevenueCatProvider>(context, listen: false)
+        .restorePurchaseStatus();
+    setState(() {
+      globals.restorePurchaseFlag = false;
+    });
+  }
 }

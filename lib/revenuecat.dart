@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 import 'package:wer_hat_zuletzt/globals.dart' as globals;
@@ -35,9 +36,8 @@ class RevenueCatProvider with ChangeNotifier {
           entitlements.isEmpty ? Entitlement.free : Entitlement.class1;
 
       notifyListeners();
-    } on Error catch (e) {
+    } on PlatformException catch (e) {
       _entitlement = Entitlement.free;
-      globals.restorePurchaseFlag = false;
     }
   }
 }
