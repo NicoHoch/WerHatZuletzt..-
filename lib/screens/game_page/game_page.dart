@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wer_hat_zuletzt/sql_service.dart';
+import 'package:wer_hat_zuletzt/models/question.dart';
+import 'package:wer_hat_zuletzt/questions_service.dart';
 
 import 'package:wer_hat_zuletzt/globals.dart' as globals;
 
@@ -38,7 +40,7 @@ class _GamePage extends State<GamePage> {
   }
 
   void nextQuestion() {
-    Provider.of<SqliteService>(context, listen: false).randomQuestion(context);
+    Provider.of<QuestionsService>(context, listen: false).randomQuestion(context);
     counter = globals.timerValue.round();
   }
 
@@ -57,7 +59,26 @@ class _GamePage extends State<GamePage> {
       body: Center(
           child: Column(children: <Widget>[
         const SizedBox(height: 80),
-        Consumer<SqliteService>(builder: (context, provider, child) {
+
+        // FutureBuilder(
+        //     future: readQuestions(),
+        //     builder: (context, snapshot) {
+        //       if (snapshot.hasError) {
+        //         return const Text('Something went wrong!');
+        //       } else if (snapshot.hasData) {
+        //         final users = snapshot.data!;
+
+        //         return ListView(
+        //           scrollDirection: Axis.vertical,
+        //           shrinkWrap: true,
+        //           children: users.map(buildQuestion).toList(),
+        //         );
+        //       } else {
+        //         return const Center(child: CircularProgressIndicator());
+        //       }
+        //     }),
+
+        Consumer<QuestionsService>(builder: (context, provider, child) {
           return provider.randQuestion.german != ""
               ? Text(
                   provider.randQuestion.german,
@@ -93,4 +114,14 @@ class _GamePage extends State<GamePage> {
           ))),
     );
   }
+
+  Widget buildQuestion(Question question) =>
+      ListTile(title: Text(question.german));
+
+  Future<List<Question>> readQuestions() => FirebaseFirestore.instance
+      .collection('Questions')
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => Question.fromJson(doc.data())).toList())
+      .first;
 }

@@ -4,24 +4,21 @@ class Question {
   final String english;
   final String type;
 
-  const Question({
-    this.id,
-    required this.german,
-    required this.english,
-    required this.type
-  });
+  const Question(
+      {this.id,
+      required this.german,
+      required this.english,
+      required this.type});
 
   Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'german': german,
-      'egnlish': english,
-      'type': type
-    };
+    return {'id': id, 'german': german, 'egnlish': english, 'type': type};
   }
 
   @override
   String toString() {
     return 'Question{id: $id, german: $german, english: $english, type: $type}';
   }
+
+  static Question fromJson(Map<String, dynamic> json) => Question(
+      german: json['german'], english: json['english'], type: json['type']);
 }

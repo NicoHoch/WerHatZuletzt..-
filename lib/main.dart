@@ -5,12 +5,14 @@ import 'package:wer_hat_zuletzt/revenuecat.dart';
 import 'package:wakelock/wakelock.dart';
 
 import 'package:wer_hat_zuletzt/purchase_api.dart';
-import 'package:wer_hat_zuletzt/sql_service.dart';
+import 'package:wer_hat_zuletzt/questions_service.dart';
 import 'settings_service.dart';
 import 'screens/home_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   Wakelock.enable();
   SettingsService.getGlobalsPersistent();
   await PurchaseAPI.init();
@@ -32,8 +34,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<RevenueCatProvider>(
           create: (_) => RevenueCatProvider(),
         ),
-        ChangeNotifierProvider<SqliteService>(
-          create: (_) => SqliteService(),
+        ChangeNotifierProvider<QuestionsService>(
+          create: (_) => QuestionsService(),
         ),
       ],
       child: MaterialApp(

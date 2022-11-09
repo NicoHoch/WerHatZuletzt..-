@@ -97,3 +97,14 @@ Insert INTO Questions ([German],[English],[Type]) SELECT '
 SELECT * from Questions;
 
 delete from Questions where Id >3;
+
+
+Insert INTO Questions ([German]
+           ,[English]
+           ,[Type])
+           SELECT 'Wer hatte zuletzt einen Pinsel in der Hand?' as 'German', 'Who last had a paintbrush in their hand?' as 'English', 'class1' as 'free';
+
+
+Update Questions
+set Type = 'class1'
+where Id == 101;

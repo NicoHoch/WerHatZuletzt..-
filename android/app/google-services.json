@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1048030600478",
+    "project_id": "werhatzuletzt",
+    "storage_bucket": "werhatzuletzt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1048030600478:android:c7a12b4aab7377a0f03d0f",
+        "android_client_info": {
+          "package_name": "com.wehazu.wer_hat_zuletzt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1048030600478-nkga16lm1g1f6oage07270gcei7g8or0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbYM00cvc1xDm4AfmrE_-dhaS1SQ1UkKI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1048030600478-nkga16lm1g1f6oage07270gcei7g8or0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

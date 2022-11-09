@@ -9,7 +9,7 @@ import 'package:wer_hat_zuletzt/screens/rules_page.dart';
 import 'package:wer_hat_zuletzt/globals.dart' as globals;
 import 'package:wer_hat_zuletzt/settings_page.dart';
 
-import 'package:wer_hat_zuletzt/sql_service.dart';
+import 'package:wer_hat_zuletzt/questions_service.dart';
 import 'package:wer_hat_zuletzt/purchase_api.dart';
 
 import 'game_page/game_page.dart';
@@ -51,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff42104a)),
                 onPressed: () {
-                  SqliteService.instance.setFlag();
+                  QuestionsService.instance.setFlag();
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const GamePage()),
