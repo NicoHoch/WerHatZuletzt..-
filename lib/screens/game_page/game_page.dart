@@ -80,7 +80,8 @@ class _GamePage extends State<GamePage> {
 
         Consumer<QuestionsService>(builder: (context, provider, child) {
           return provider.randQuestion.german != ""
-              ? Text(
+              ? 
+              Text(
                   provider.randQuestion.german,
                   style: const TextStyle(
                     fontSize: 40,

@@ -30,7 +30,7 @@ class QuestionsService with ChangeNotifier {
 
     if (entitlement == Entitlement.free) {
       return FirebaseFirestore.instance
-          .collection('Questions')
+          .collection('Questions3')
           .where('type', isEqualTo: 'free')
           .snapshots()
           .map((snapshot) => snapshot.docs
@@ -39,15 +39,13 @@ class QuestionsService with ChangeNotifier {
           .first;
     } else {
       return FirebaseFirestore.instance
-          .collection('Questions')
+          .collection('Questions3')
           .snapshots()
           .map((snapshot) => snapshot.docs
               .map((doc) => Question.fromJson(doc.data()))
               .toList())
           .first;
     }
-
-    // Convert the List<Map<String, dynamic> into a List<Question>.
   }
 
   Future<void> setFlag() async {
