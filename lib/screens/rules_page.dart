@@ -10,7 +10,7 @@ class RulesPage extends StatelessWidget {
           title: const Text('Wer hat zuletzt..?'),
         ),
         body: Container(
-            color: Color(0x662572),
+            color: const Color(0x00662572),
             child: ListView(
               children: const <Widget>[
                 Card(

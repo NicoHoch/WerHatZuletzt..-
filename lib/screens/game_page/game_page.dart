@@ -40,7 +40,8 @@ class _GamePage extends State<GamePage> {
   }
 
   void nextQuestion() {
-    Provider.of<QuestionsService>(context, listen: false).randomQuestion(context);
+    Provider.of<QuestionsService>(context, listen: false)
+        .randomQuestion(context);
     counter = globals.timerValue.round();
   }
 
@@ -59,36 +60,16 @@ class _GamePage extends State<GamePage> {
       body: Center(
           child: Column(children: <Widget>[
         const SizedBox(height: 80),
-
-        // FutureBuilder(
-        //     future: readQuestions(),
-        //     builder: (context, snapshot) {
-        //       if (snapshot.hasError) {
-        //         return const Text('Something went wrong!');
-        //       } else if (snapshot.hasData) {
-        //         final users = snapshot.data!;
-
-        //         return ListView(
-        //           scrollDirection: Axis.vertical,
-        //           shrinkWrap: true,
-        //           children: users.map(buildQuestion).toList(),
-        //         );
-        //       } else {
-        //         return const Center(child: CircularProgressIndicator());
-        //       }
-        //     }),
-
         Consumer<QuestionsService>(builder: (context, provider, child) {
           return provider.randQuestion.german != ""
-              ? 
-              Text(
+              ? Text(
                   provider.randQuestion.german,
                   style: const TextStyle(
                     fontSize: 40,
                   ),
                   textAlign: TextAlign.center,
                 )
-              : const Text("");
+              : const Center(child: CircularProgressIndicator());
         }),
         if (globals.toggleTimer == true)
           Column(

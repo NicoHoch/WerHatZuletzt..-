@@ -31,10 +31,10 @@ class _SettingsPageState extends State<SettingsPage> {
         children: [
           Row(
             mainAxisSize: MainAxisSize.max,
-            children: [],
+            children: const [],
           ),
           Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
               child: Container(
                   width: MediaQuery.of(context).size.width * 0.8,
                   height: 60,

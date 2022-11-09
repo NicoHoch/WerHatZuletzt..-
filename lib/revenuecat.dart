@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
-import 'package:wer_hat_zuletzt/globals.dart' as globals;
+import 'package:wer_hat_zuletzt/questions_service.dart';
 import 'models/entitlement.dart';
 
 class RevenueCatProvider with ChangeNotifier {
@@ -24,6 +24,7 @@ class RevenueCatProvider with ChangeNotifier {
 
     final entitlements = purchaseInfo.entitlements.active.values.toList();
     _entitlement = entitlements.isEmpty ? Entitlement.free : Entitlement.class1;
+    QuestionsService.instance.setFlag();
 
     notifyListeners();
   }

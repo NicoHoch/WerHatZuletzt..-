@@ -1,12 +1,8 @@
-import 'dart:io';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:wer_hat_zuletzt/revenuecat.dart';
 
 import 'models/entitlement.dart';
@@ -20,8 +16,7 @@ class QuestionsService with ChangeNotifier {
 
   static List<Question> _quesionListTemp = [];
   static bool _flag = false;
-  Question randQuestion =
-      new Question(german: "Viel Spaß!", english: "Loading", type: "free");
+  Question randQuestion = new Question(german: "", english: "", type: "");
 
   //getQuestions
   Future<List<Question>> getQuestions(BuildContext context) {
@@ -40,6 +35,7 @@ class QuestionsService with ChangeNotifier {
     } else {
       return FirebaseFirestore.instance
           .collection('Questions3')
+          .where('type', isNotEqualTo: 'free')
           .snapshots()
           .map((snapshot) => snapshot.docs
               .map((doc) => Question.fromJson(doc.data()))
